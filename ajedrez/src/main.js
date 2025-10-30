@@ -1,24 +1,27 @@
-import './style.css'
-import javascriptLogo from './javascript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
+import './style.css';
 
-document.querySelector('#app').innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
-  </div>
-`
+const app = document.querySelector('#app');
+const board = document.createElement('div');
+board.className = 'chessboard';
 
-setupCounter(document.querySelector('#counter'))
+const pieces = {
+  white: ['♖', '♘', '♗', '♕', '♔', '♗', '♘', '♖', '♙'],
+  black: ['♜', '♞', '♝', '♛', '♚', '♝', '♞', '♜', '♟']
+};
+
+for (let row = 0; row < 8; row++) {
+  for (let col = 0; col < 8; col++) {
+    const square = document.createElement('div');
+    square.classList.add('square');
+    square.classList.add((row + col) % 2 === 0 ? 'white' : 'black');
+
+    if (row === 0) square.textContent = pieces.black[col];
+    else if (row === 1) square.textContent = pieces.black[8];
+    else if (row === 6) square.textContent = pieces.white[8];
+    else if (row === 7) square.textContent = pieces.white[col];
+
+    board.appendChild(square);
+  }
+}
+
+app.appendChild(board);
