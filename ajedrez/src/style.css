@@ -1,19 +1,28 @@
+/* Fondo general y tipografía */
 body {
+  margin: 0;
   font-family: sans-serif;
   background-color: #f0f0f0;
   text-align: center;
-  margin: 0;
-  padding: 20px;
 }
 
+/* Contenedor principal */
+#app {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Centrado vertical */
+}
+
+/* Tablero de ajedrez */
 .chessboard {
   display: grid;
   grid-template-columns: repeat(8, 60px);
   grid-template-rows: repeat(8, 60px);
-  margin: 0 auto;
   border: 4px solid #333;
 }
 
+/* Casillas individuales */
 .square {
   width: 60px;
   height: 60px;
@@ -21,8 +30,11 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 32px;
+  cursor: pointer;
+  user-select: none;
 }
 
+/* Colores de casillas */
 .white {
   background-color: #eee;
 }
@@ -30,4 +42,14 @@ body {
 .black {
   background-color: #444;
   color: white;
+}
+
+/* Casilla seleccionada */
+.selected {
+  outline: 3px solid yellow;
+  transition: outline 0.2s ease-in-out;
+}
+
+.hint {
+  box-shadow: inset 0 0 0 4px rgba(0, 255, 0, 0.5);
 }
