@@ -17,7 +17,7 @@ const pieceSymbols = {
 // Renderizar el tablero
 function renderBoard() {
   board.innerHTML = '';
-  const state = game.board(); // matriz 8x8
+  const state = game.board();
 
   for (let row = 0; row < 8; row++) {
     for (let col = 0; col < 8; col++) {
@@ -50,24 +50,33 @@ board.addEventListener('click', (e) => {
   const file = String.fromCharCode(97 + col); // 'a' to 'h'
   const rank = 8 - row; // 8 to 1
   const coord = file + rank;
+  const piece = game.get(coord);
 
   if (!selected) {
-    // Seleccionar origen
-    const piece = game.get(coord);
     if (piece && piece.color === game.turn()) {
       selected = coord;
-      square.classList.add('selected');
+      clearSelection();
       clearHints();
+      square.classList.add('selected');
       showHints(coord);
     }
-  } else {
-    // Intentar mover
-    const move = game.move({ from: selected, to: coord });
-    clearSelection();
-    if (move) renderBoard(); // si fue válido, actualiza tablero
-    selected = null;
-    clearHints();
+    return;
   }
+
+  if (piece && piece.color === game.turn()) {
+    selected = coord;
+    clearSelection();
+    clearHints();
+    square.classList.add('selected');
+    showHints(coord);
+    return;
+  }
+
+  const move = game.move({ from: selected, to: coord });
+  clearSelection();
+  clearHints();
+  selected = null;
+  if (move) renderBoard();
 });
 
 function clearSelection() {
@@ -79,8 +88,8 @@ function clearSelection() {
 function showHints(squareName) {
   const moves = game.moves({ square: squareName, verbose: true });
   moves.forEach(move => {
-    const col = move.to.charCodeAt(0) - 97; // 'a' → 0
-    const row = 8 - parseInt(move.to[1]);   // '8' → 0
+    const col = move.to.charCodeAt(0) - 97;
+    const row = 8 - parseInt(move.to[1]);
     const target = board.querySelector(`[data-row="${row}"][data-col="${col}"]`);
     if (target) target.classList.add('hint');
   });
